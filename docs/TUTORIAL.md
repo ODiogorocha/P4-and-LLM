@@ -217,10 +217,3 @@ if __name__ == "__main__":
 * [P4Runtime Documentation](https://p4.org/p4runtime/)
 
 ---
-
-**Fim do tutorial!**
-Se precisar de exemplos específicos ou ajuda com algum ponto, só chamar!
-
----
-
-Quer que eu gere este `.md` como arquivo para você baixar?
