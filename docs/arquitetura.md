@@ -59,15 +59,16 @@ P4Runtime é a API de controle padrão para switches P4. Ele seria usado para a 
 
 ```mermaid
 graph TD
-    A[Mininet Environment (Simulado)] --> B(P4 Switches - BMv2 (Simulado))
-    B --> C[P4 Program for Data Collection (Lógica)]
-    C --> D[Flow Data (Simulado via Digests)]
+    A[Mininet Environment - Simulado] --> B[P4 Switches BMv2 - Simulado]
+    B --> C[P4 Program for Data Collection]
+    C --> D[Flow Data - Digests Simulados]
     D --> E[Python Controller]
-    E --> F[Large Language Model (LLM - Função Simulada)]
-    F --> G[Anomaly Detection & New Rules (Simuladas)]
+    E --> F[Large Language Model - LLM Simulada]
+    F --> G[Anomaly Detection & New Rules]
     G --> E
-    E --> H[P4Runtime API (Chamadas Simuladas)]
+    E --> H[P4Runtime API - Chamadas Simuladas]
     H --> B
+
 ```
 
 ## 5. Considerações Futuras
