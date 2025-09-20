@@ -73,5 +73,5 @@ O controlador iniciará a coleta de fluxos simulados, enviará os dados ao módu
 ## 4. Referências e Documentação
 
 - [Documentação da arquitetura](docs/arquitetura.md)
-- [Artigo teórico](docs/artigo.md)
+
 
