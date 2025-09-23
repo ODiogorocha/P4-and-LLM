@@ -1,20 +1,61 @@
 import time
 import random
-import socket
+import os
+import json
+from openai import OpenAI
 
-# Função para simular a LLM
+# Inicializa o cliente OpenAI com a chave da API
+# Certifique-se de que OPENAI_API_KEY está definida como uma variável de ambiente
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+
+def call_openai_for_anomaly_detection(flow_data):
+    prompt = f"""Analise os seguintes dados de fluxo de rede para detectar anomalias. 
+    Os dados de fluxo são: {flow_data}.
+    Identifique se há alguma anomalia (por exemplo, alto volume de pacotes de um único IP de origem, varredura de porta, etc.).
+    Se uma anomalia for detectada, sugira uma ação de mitigação, como 'drop' para um IP de origem específico.
+    Formato da resposta JSON esperado: 
+    {{"anomaly_detected": boolean, "description": "string", "action": "none" | "drop", "target_ip": "string" (se a ação for 'drop')}}
+    Exemplo de anomalia: {{"anomaly_detected": true, "description": "Alto volume de tráfego do IP 10.0.0.1, possível ataque DDoS.", "action": "drop", "target_ip": "10.0.0.1"}}
+    Exemplo sem anomalia: {{"anomaly_detected": false, "description": "Nenhuma anomalia detectada.", "action": "none"}}
+    """
+
+    try:
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",  
+            messages=[
+                {"role": "system", "content": "Você é um analista de segurança de rede especializado em detectar anomalias de tráfego."},
+                {"role": "user", "content": prompt}
+            ],
+            response_format={ "type": "json_object" },
+            temperature=0.2, # Baixa temperatura para respostas mais consistentes
+        )
+        # A resposta da API já deve ser um objeto JSON devido a response_format
+        return response.choices[0].message.content
+    except Exception as e:
+        print(f"Erro ao chamar a API da OpenAI: {e}")
+        return None
+
+# Função para simular a LLM (agora chama a API real)
 def simulate_llm_anomaly_detection(flow_data):
-    print(f"[LLM] Recebido dados de fluxo para análise: {flow_data}")
-    # Lógica de detecção de anomalias simplificada
-    # Se o IP de origem for 10.0.0.1 e o número de pacotes for alto (simulado aqui como > 5)
-    if flow_data.get("src_ip") == "10.0.0.1" and flow_data.get("packet_count", 0) > 5:
-        print("[LLM] Anomalia detectada: Tráfego do IP 10.0.0.1 é malicioso (alto volume).")
-        return {"action": "drop", "src_ip": "10.0.0.1"}
+    print(f"[LLM] Enviando dados de fluxo para a API da OpenAI para análise: {flow_data}")
+    openai_response = call_openai_for_anomaly_detection(flow_data)
+
+    if openai_response:
+        try:
+            parsed_response = json.loads(openai_response)
+            print(f"[LLM] Resposta da OpenAI: {parsed_response}")
+            if parsed_response.get("anomaly_detected") and parsed_response.get("action") == "drop":
+                return {"action": "drop", "src_ip": parsed_response.get("target_ip")}
+            else:
+                return {"action": "none"}
+        except json.JSONDecodeError as e:
+            print(f"Erro ao decodificar JSON da resposta da OpenAI: {e}")
+            return {"action": "none"}
     return {"action": "none"}
 
 # Função para simular a aplicação de regras no switch P4
 def simulate_p4_rule_application(table_name, match_fields, action_name, action_params={}):
-    print(f"[P4Runtime Simulado] Aplicando regra na tabela '{table_name}':")
+    print(f"[P4Runtime Simulado] Aplicando regra na tabela \'{table_name}\':")
     print(f"  Match: {match_fields}")
     print(f"  Action: {action_name} com parâmetros {action_params}")
     print("[P4Runtime Simulado] Regra aplicada com sucesso (simulado).")
@@ -75,4 +116,3 @@ def run_simulated_controller():
 
 if __name__ == "__main__":
     run_simulated_controller()
-

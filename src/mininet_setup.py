@@ -3,12 +3,12 @@ import time
 import subprocess
 
 # Caminho para o controlador Python
-CONTROLLER_PATH = os.path.abspath("./controller.py")
+CONTROLLER_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "controller.py")
 
 def run_simulation():
     print("*** Iniciando o controlador simulado em segundo plano (sem Mininet real) ***\n")
     # Inicia o controlador Python simulado em segundo plano
-    controller_process = subprocess.Popen(["python3.11", CONTROLLER_PATH])
+    controller_process = subprocess.Popen(["python3", CONTROLLER_PATH])
 
     print("*** Controlador simulado em execução. A simulação será executada por 30 segundos. ***\n")
     try:
