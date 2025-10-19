@@ -1,0 +1,90 @@
+    {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Esquema de Memória de Casos de Tráfego de Rede",
+    "description": "Esquema para armazenar casos de tráfego de rede para análise de anomalias por LLM.",
+    "type": "object",
+    "properties": {
+    "case_id": {
+        "type": "string",
+        "description": "Identificador único para o caso de tráfego."
+    },
+    "timestamp": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Carimbo de data/hora da ocorrência do tráfego."
+    },
+    "ethernet_header": {
+        "type": "object",
+        "properties": {
+        "dstAddr": {
+            "type": "string",
+            "pattern": "^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$",
+            "description": "Endereço MAC de destino."
+        },
+        "srcAddr": {
+            "type": "string",
+            "pattern": "^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$",
+            "description": "Endereço MAC de origem."
+        },
+        "etherType": {
+            "type": "string",
+            "pattern": "^0x[0-9A-Fa-f]{4}$",
+            "description": "Tipo Ethernet (e.g., 0x0800 para IPv4)."
+        }
+        },
+        "required": ["dstAddr", "srcAddr", "etherType"]
+    },
+    "ipv4_header": {
+        "type": "object",
+        "properties": {
+        "srcAddr": {
+            "type": "string",
+            "format": "ipv4",
+            "description": "Endereço IP de origem."
+        },
+        "dstAddr": {
+            "type": "string",
+            "format": "ipv4",
+            "description": "Endereço IP de destino."
+        },
+        "protocol": {
+            "type": "integer",
+            "description": "Protocolo IP (e.g., 6 para TCP, 17 para UDP)."
+        },
+        "ttl": {
+            "type": "integer",
+            "description": "Time to Live."
+        }
+        },
+        "required": ["srcAddr", "dstAddr", "protocol", "ttl"]
+    },
+    "p4_metadata": {
+        "type": "object",
+        "properties": {
+        "ingress_port": {
+            "type": "integer",
+            "description": "Porta de entrada no switch P4."
+        },
+        "egress_port": {
+            "type": "integer",
+            "description": "Porta de saída determinada pelo switch P4."
+        },
+        "action_name": {
+            "type": "string",
+            "description": "Nome da ação P4 aplicada (e.g., set_egress_port, ipv4_forward)."
+        }
+        },
+        "required": ["ingress_port", "egress_port", "action_name"]
+    },
+    "anomaly_status": {
+        "type": "string",
+        "enum": ["normal", "anomalo", "indeterminado"],
+        "description": "Status da anomalia determinado pela LLM."
+    },
+    "anomaly_reason": {
+        "type": "string",
+        "description": "Razão detalhada para o status da anomalia, se aplicável."
+    }
+    },
+    "required": ["case_id", "timestamp", "ethernet_header", "p4_metadata", "anomaly_status"]
+    }

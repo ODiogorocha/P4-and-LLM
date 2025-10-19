@@ -13,7 +13,7 @@ def run_simulation():
     print("*** Controlador simulado em execução. A simulação será executada por 30 segundos. ***\n")
     try:
         # Manter o processo principal ativo por um tempo para que o controlador simulado possa rodar
-        time.sleep(30)
+        time.sleep(60)
     finally:
         print("\n*** Tempo de simulação esgotado. Terminando o controlador simulado... ***\n")
         controller_process.terminate()

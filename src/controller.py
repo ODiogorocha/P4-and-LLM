@@ -6,9 +6,8 @@ from openai import OpenAI
 
 # Inicializa o cliente OpenAI com a chave da API
 # Certifique-se de que OPENAI_API_KEY está definida como uma variável de ambiente
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
-
-def call_openai_for_anomaly_detection(flow_data):
+client = OpenAI(api_key="")
+def call_llm_for_anomaly_detection(flow_data):
     prompt = f"""Analise os seguintes dados de fluxo de rede para detectar anomalias. 
     Os dados de fluxo são: {flow_data}.
     Identifique se há alguma anomalia (por exemplo, alto volume de pacotes de um único IP de origem, varredura de porta, etc.).
@@ -38,11 +37,11 @@ def call_openai_for_anomaly_detection(flow_data):
 # Função para simular a LLM (agora chama a API real)
 def simulate_llm_anomaly_detection(flow_data):
     print(f"[LLM] Enviando dados de fluxo para a API da OpenAI para análise: {flow_data}")
-    openai_response = call_openai_for_anomaly_detection(flow_data)
+    llm_response = call_llm_for_anomaly_detection(flow_data)
 
-    if openai_response:
+    if llm_response:
         try:
-            parsed_response = json.loads(openai_response)
+            parsed_response = json.loads(llm_response)
             print(f"[LLM] Resposta da OpenAI: {parsed_response}")
             if parsed_response.get("anomaly_detected") and parsed_response.get("action") == "drop":
                 return {"action": "drop", "src_ip": parsed_response.get("target_ip")}

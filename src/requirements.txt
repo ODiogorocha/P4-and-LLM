@@ -5,3 +5,5 @@ os
 subprocess
 openai
 json
+llama-stack
+llama-stack -U

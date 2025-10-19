@@ -1,0 +1,80 @@
+Flow ID: 1
+Flow Data: {'flow_id': 1, 'src_ip': '10.0.0.1', 'dst_ip': '10.0.0.8', 'src_port': 54321, 'dst_port': 80, 'protocol': 6, '__coment__': 'manter a baixo daqui', 'packet_count': 15, 'byte_count': 12000}
+LLM Response: {'anomaly_detected': True, 'description': 'Alto volume de tráfego do IP 10.0.0.1, possível ataque DDoS.', 'action': 'drop', 'target_ip': '10.0.0.1'}
+--------------------------------------------------
+Flow ID: 2
+Flow Data: {'flow_id': 2, 'src_ip': '10.0.0.25', 'dst_ip': '10.0.0.40', 'src_port': 40000, 'dst_port': 443, 'protocol': 6, 'packet_count': 3, 'byte_count': 1500}
+LLM Response: {'anomaly_detected': False, 'description': 'Nenhuma anomalia detectada.', 'action': 'none'}
+--------------------------------------------------
+Flow ID: 3
+Flow Data: {'flow_id': 3, 'src_ip': '10.0.0.1', 'dst_ip': '10.0.0.100', 'src_port': 56000, 'dst_port': 22, 'protocol': 6, 'packet_count': 18, 'byte_count': 22000}
+LLM Response: {'anomaly_detected': True, 'description': 'Possível varredura de porta ou tráfego suspeito do IP 10.0.0.1.', 'action': 'drop', 'target_ip': '10.0.0.1'}
+--------------------------------------------------
+Flow ID: 4
+Flow Data: {'flow_id': 4, 'src_ip': '10.0.0.55', 'dst_ip': '10.0.0.77', 'src_port': 35000, 'dst_port': 8080, 'protocol': 17, 'packet_count': 2, 'byte_count': 800}
+LLM Response: {'anomaly_detected': False, 'description': 'Nenhuma anomalia detectada.', 'action': 'none'}
+--------------------------------------------------
+Flow ID: 5
+Flow Data: {'flow_id': 5, 'src_ip': '10.0.0.1', 'dst_ip': '10.0.0.9', 'src_port': 33445, 'dst_port': 23, 'protocol': 6, 'packet_count': 12, 'byte_count': 9000}
+LLM Response: {'anomaly_detected': True, 'description': 'Tráfego alto vindo do IP 10.0.0.1 para porta telnet (23) — suspeita de varredura ou tentativa de exploração.', 'action': 'drop', 'target_ip': '10.0.0.1'}
+--------------------------------------------------
+Flow ID: 6
+Flow Data: {'flow_id': 6, 'src_ip': '10.0.0.120', 'dst_ip': '10.0.0.200', 'src_port': 12345, 'dst_port': 53, 'protocol': 17, 'packet_count': 1, 'byte_count': 60}
+LLM Response: {'anomaly_detected': False, 'description': 'Consulta DNS normal (poucos pacotes).', 'action': 'none'}
+--------------------------------------------------
+Flow ID: 7
+Flow Data: {'flow_id': 7, 'src_ip': '10.0.0.77', 'dst_ip': '10.0.0.8', 'src_port': 40001, 'dst_port': 80, 'protocol': 6, 'packet_count': 0, 'byte_count': 0}
+LLM Response: {'anomaly_detected': True, 'description': 'Fluxo com 0 pacotes — possível erro de coleta ou tráfego inválido.', 'action': 'none'}
+--------------------------------------------------
+Flow ID: 8
+Flow Data: {'flow_id': 8, 'src_ip': '10.0.0.150', 'dst_ip': '10.0.0.10', 'src_port': 45000, 'dst_port': 8080, 'protocol': 6, 'packet_count': 4, 'byte_count': 6000}
+LLM Response: {'anomaly_detected': False, 'description': 'Tráfego web normal para porta 8080.', 'action': 'none'}
+--------------------------------------------------
+Flow ID: 9
+Flow Data: {'flow_id': 9, 'src_ip': '10.0.0.2', 'dst_ip': '10.0.0.3', 'src_port': 20000, 'dst_port': 22, 'protocol': 6, 'packet_count': 9, 'byte_count': 9000}
+LLM Response: {'anomaly_detected': False, 'description': 'Conexão SSH com número moderado de pacotes — sem anomalia aparente.', 'action': 'none'}
+--------------------------------------------------
+Flow ID: 10
+Flow Data: {'flow_id': 10, 'src_ip': '10.0.0.250', 'dst_ip': '10.0.0.5', 'src_port': 41000, 'dst_port': 80, 'protocol': 6, 'packet_count': 7, 'byte_count': 14000}
+LLM Response: {'anomaly_detected': True, 'description': 'Volume de bytes muito alto relativo aos pacotes — comportamento anômalo suspeito.', 'action': 'drop', 'target_ip': '10.0.0.250'}
+--------------------------------------------------
+Flow ID: 11
+Flow Data: {'flow_id': 11, 'src_ip': '10.0.0.1', 'dst_ip': '10.0.0.20', 'src_port': 1234, 'dst_port': 21, 'protocol': 6, 'packet_count': 20, 'byte_count': 30000}
+LLM Response: {'anomaly_detected': True, 'description': 'Grande número de pacotes do IP 10.0.0.1 — possível ataque ou transferência anômala via FTP (porta 21).', 'action': 'drop', 'target_ip': '10.0.0.1'}
+--------------------------------------------------
+Flow ID: 12
+Flow Data: {'flow_id': 12, 'src_ip': '10.0.0.33', 'dst_ip': '10.0.0.44', 'src_port': 33333, 'dst_port': 443, 'protocol': 6, 'packet_count': 5, 'byte_count': 4500}
+LLM Response: {'anomaly_detected': False, 'description': 'Tráfego HTTPS típico.', 'action': 'none'}
+--------------------------------------------------
+Flow ID: 13
+Flow Data: {'flow_id': 13, 'src_ip': '10.0.0.77', 'dst_ip': '10.0.0.88', 'src_port': 50000, 'dst_port': 3306, 'protocol': 6, 'packet_count': 10, 'byte_count': 3200}
+LLM Response: {'anomaly_detected': True, 'description': 'Conexões repetidas para porta de banco de dados (3306) — possivelmente suspeito.', 'action': 'drop', 'target_ip': '10.0.0.77'}
+--------------------------------------------------
+Flow ID: 14
+Flow Data: {'flow_id': 14, 'src_ip': '10.0.0.90', 'dst_ip': '10.0.0.91', 'src_port': 25000, 'dst_port': 53, 'protocol': 17, 'packet_count': 30, 'byte_count': 15000}
+LLM Response: {'anomaly_detected': True, 'description': 'Volume muito alto de consultas UDP/DNS — comportamento suspeito (exfiltração via DNS ou amplificação).', 'action': 'drop', 'target_ip': '10.0.0.90'}
+--------------------------------------------------
+Flow ID: 15
+Flow Data: {'flow_id': 15, 'src_ip': '10.0.0.101', 'dst_ip': '10.0.0.102', 'src_port': 34567, 'dst_port': 8080, 'protocol': 6, 'packet_count': 3, 'byte_count': 3000}
+LLM Response: {'anomaly_detected': False, 'description': 'Tráfego de aplicação leve — sem anomalia.', 'action': 'none'}
+--------------------------------------------------
+Flow ID: 16
+Flow Data: {'flow_id': 16, 'src_ip': '10.0.0.123', 'dst_ip': '10.0.0.124', 'src_port': 23456, 'dst_port': 25, 'protocol': 6, 'packet_count': 14, 'byte_count': 7000}
+LLM Response: {'anomaly_detected': True, 'description': 'Tráfego alto para porta SMTP (25) — possível envio massivo de e-mails (spam) ou abuso.', 'action': 'drop', 'target_ip': '10.0.0.123'}
+--------------------------------------------------
+Flow ID: 17
+Flow Data: {'flow_id': 17, 'src_ip': '10.0.0.5', 'dst_ip': '10.0.0.6', 'src_port': 60000, 'dst_port': 80, 'protocol': 6, 'packet_count': 2, 'byte_count': 120}
+LLM Response: {'anomaly_detected': False, 'description': 'Acesso HTTP pequeno — normal.', 'action': 'none'}
+--------------------------------------------------
+Flow ID: 18
+Flow Data: {'flow_id': 18, 'src_ip': '10.0.0.199', 'dst_ip': '10.0.0.2', 'src_port': 15000, 'dst_port': 6667, 'protocol': 6, 'packet_count': 11, 'byte_count': 11000}
+LLM Response: {'anomaly_detected': True, 'description': 'Tráfego elevado para porta IRC (6667) — pode indicar botnet/controle remoto.', 'action': 'drop', 'target_ip': '10.0.0.199'}
+--------------------------------------------------
+Flow ID: 19
+Flow Data: {'flow_id': 19, 'src_ip': '10.0.0.42', 'dst_ip': '10.0.0.43', 'src_port': 12000, 'dst_port': 443, 'protocol': 6, 'packet_count': 6, 'byte_count': 3600}
+LLM Response: {'anomaly_detected': False, 'description': 'Tráfego HTTPS moderado — sem anomalia.', 'action': 'none'}
+--------------------------------------------------
+Flow ID: 20
+Flow Data: {'flow_id': 20, 'src_ip': '10.0.0.1', 'dst_ip': '10.0.0.254', 'src_port': 40000, 'dst_port': 9999, 'protocol': 6, 'packet_count': 25, 'byte_count': 50000}
+LLM Response: {'anomaly_detected': True, 'description': 'Tráfego extremo do IP 10.0.0.1 para porta incomum (9999) — forte indicação de anomalia.', 'action': 'drop', 'target_ip': '10.0.0.1'}
+--------------------------------------------------
