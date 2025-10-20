@@ -58,20 +58,94 @@ A solução é composta por quatro camadas principais:
 
 2. Instale as dependências:
     ```bash
-    pip install -r requirements.txt
-    ```
+    # Detecção de Anomalias em Redes Utilizando P4 e Modelos de Linguagem
 
-3. Execute a simulação:
+    Este repositório demonstra uma solução para detecção de anomalias em redes, integrando
+    programabilidade P4 com Modelos de Linguagem (LLMs). O código inclui um controlador
+    simulado que coleta fluxos gerados artificialmente, envia-os para uma LLM (real ou
+    simulada) e aplica ações de mitigação (ex.: drop) no P4 (simulado).
+
+    ---
+
+    ## Estrutura principal
+
+    - `src/class/controller.py`  — Controlador principal (classe `Controller`).
+    - `src/mininet_setup.py`    — Classe `MininetSimulator` que inicia o `controller.py` como subprocesso.
+    - `src/main.py`             — Runner central que pode executar em `subprocess` ou `inprocess`.
+    - `src/flow_collector.p4`   — Programa P4 (coleta de fluxos) — (se aplicável).
+    - `src/requirements.txt`    — Dependências Python.
+
+    ---
+
+    ## Como executar
+
+    Primeiro, instale as dependências:
+
     ```bash
-    python3 mininet_setup.py
+    pip install -r src/requirements.txt
     ```
 
-O controlador iniciará a coleta de fluxos simulados, enviará os dados ao módulo LLM e aplicará regras de mitigação conforme as recomendações.
+    Existem dois modos principais para rodar a simulação (via `src/main.py`):
 
----
+    1) Modo `subprocess` (padrão)
 
-## 4. Referências e Documentação
+    Este modo usa a classe `MininetSimulator` para iniciar `controller.py` como um subprocesso.
 
-- [Documentação da arquitetura](docs/arquitetura.md)
+    ```bash
+    python3 src/main.py --mode subprocess --duration 60
+    ```
+
+    2) Modo `inprocess`
+
+    Este modo carrega a classe `Controller` diretamente (do arquivo `src/class/controller.py`) e a executa
+    em um processo separado usando `multiprocessing`. Útil para injetar clientes LLM diretamente.
+
+    ```bash
+    python3 src/main.py --mode inprocess --duration 60 --provider openai --api-key YOUR_KEY
+    ```
+
+    Parâmetros úteis:
+    - `--duration`: duração da simulação em segundos (padrão 60).
+    - `--controller-path`: caminho para `controller.py` (apenas para `subprocess`).
+    - `--provider` / `--api-key`: usado no modo `inprocess` para inicializar um cliente LLM automaticamente.
+
+    ---
+
+    ## Injetando diferentes clientes LLM
+
+    A classe `Controller` aceita um parâmetro `client` já instanciado, ou `provider`+`api_key`.
+    Dessa forma você pode injetar qualquer cliente que siga um dos formatos mais comuns:
+
+    - OpenAI-like: `client.chat.completions.create(...)`
+    - Llama-like: `client.chat.create(...)` ou `client.completions.create(...)`
+    - Callable simples: `client(prompt)`
+    - Outros métodos comuns: `client.generate(prompt)`, `client.predict(prompt)`
+
+    Exemplo (injetando um cliente chamável de teste):
+
+    ```python
+    from src.class.controller import Controller
+
+    def dummy_client(prompt: str) -> dict:
+        # Implementação de teste que devolve um dict compatível
+        return {"anomaly_detected": False, "description": "Teste", "action": "none"}
+
+    ctrl = Controller(client=dummy_client)
+    print(ctrl.call_llm_for_anomaly_detection({"packet_count": 1, "byte_count": 100, "src_ip": "10.0.0.5"}))
+    ```
+
+    ---
+
+    ## Notas finais
+
+    - O fallback heurístico local detecta anomalia quando `packet_count > 5` ou `byte_count > 8000`.
+    - Os comentários do código foram traduzidos para PT-BR para facilitar a leitura.
+    - Se quiser que eu gere um exemplo pronto que injete um cliente real (por exemplo, `openai` ou `llama`), diga qual cliente você usa e eu adiciono um exemplo de configuração.
+
+    ---
+
+    ## Referências
+
+    - `docs/arquitetura.md`
 
 
