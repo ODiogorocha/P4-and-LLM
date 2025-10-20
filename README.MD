@@ -56,8 +56,8 @@ A solução é composta por quatro camadas principais:
     cd P4-and-LLM
     ```
 
-2. Instale as dependências:
-    ```bash
+
+
     # Detecção de Anomalias em Redes Utilizando P4 e Modelos de Linguagem
 
     Este repositório demonstra uma solução para detecção de anomalias em redes, integrando
